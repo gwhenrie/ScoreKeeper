@@ -12,6 +12,11 @@ from PyQt5.QtGui import QColor
 
 class ScoreKeeper(QWidget):
 
+    def setup_table(self):
+        self.numRounds = 1
+        self.table.setRowCount(self.numRounds)
+        self.table.setVerticalHeaderItem(0, QTableWidgetItem('Total'))
+
     def __init__(self):
         super().__init__()
         self.setWindowTitle('Score Keeper')
@@ -40,14 +45,17 @@ class ScoreKeeper(QWidget):
         self.setLayout(self.mainLayout)
 
         # Set up the TOTAL row
-        self.numRounds = 1
-        self.table.setRowCount(self.numRounds)
-        self.table.setVerticalHeaderItem(0, QTableWidgetItem('Total'))
+        self.setup_table()
         self.table.currentCellChanged.connect(self.calculate_total)
 
         self.newRound = QPushButton('New Round')
         self.newRound.clicked.connect(self.new_round)
         self.mainLayout.addWidget(self.newRound)
+
+        # Set up the clear button 
+        self.clear = QPushButton('Clear Scores')
+        self.clear.clicked.connect(self.setup_table)
+        self.mainLayout.addWidget(self.clear)
 
     def show_winner(self):
         # Depending on if the lowWins is checked or not 
